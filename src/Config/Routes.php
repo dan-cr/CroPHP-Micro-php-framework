@@ -4,18 +4,18 @@ use \Crodev\Core\Router;
 
 // Home Page
 Router::addRoute('/', 'GET', [
-    'controller' => 'test',
+    'handler' => 'test',
     'action' => 'index'
 ]);
 
 // Test Page
 Router::addRoute('/test/',  'GET', [
-    'controller' => 'home',
+    'handler' => 'home',
     'action' => 'index'
 ]);
 
 // 404 Page
 Router::addRoute('/404/',  'GET', [
-    'controller' => 'error',
+    'handler' => 'error',
     'action' => 'notFound'
 ]);

@@ -42,7 +42,7 @@ class Request {
      *
      * @return string
      */
-    public static function getPath() {
+    public static function getPath(): string {
         self::getUrlParts();
         // Add starting slash if missing
         if (strpos(self::$path, '/') !== 0) {
@@ -54,5 +54,14 @@ class Request {
         }
         // Remove duplicate forward slashes and return path
         return preg_replace('/\/+/', '/', self::$path);
+    }
+
+    /**
+     * Determine the request method
+     * 
+     * @return string
+     */
+    public static function getRequestMethod(): string {
+        return $_SERVER['REQUEST_METHOD'];
     }
 }

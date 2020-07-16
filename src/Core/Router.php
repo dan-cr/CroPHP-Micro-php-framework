@@ -2,6 +2,8 @@
 
 namespace Crodev\Core;
 
+use Crodev\Core\Utilities\Url\UrlHelper;
+
 class Router {
 
     /**
@@ -16,19 +18,20 @@ class Router {
      * Appends a new route to the routes array
      *
      * @param string $expression
-     * @param array $controller
+     * @param string $method
+     * @param array $operation
      * @return void
      */
-    public static function addRoute(string $expression, string $verb, array $operation): void {
+    public static function addRoute(string $expression, string $method, array $operation): void {
 
         // Destructure assoc array into individual parts
-        ['controller' => $controller, 'action' => $action] = $operation;
+        ['handler' => $handler, 'action' => $action] = $operation;
 
         // Append new route to routes array
         self::$routes[] = [
             'path' => $expression,
-            'verb' => $verb,
-            'controller' => $controller,
+            'method' => $method,
+            'handler' => $handler,
             'action' => $action
         ];
     }
@@ -47,16 +50,14 @@ class Router {
      * @return array
      */
     public static function getRouteVariableIndexes($route): array {
-        $position = [];
-        $parts = array_filter(
-            preg_split("#/#", $route['path'])
-        );
-        foreach($parts as $key => $part) {
-            if (strpos($part, ':') === 0) {
-                $position[$part] = ($key-1);
+        $indexes = [];
+        $path = UrlHelper::getNonEmptyPathSegmentsAsArray($route['path']);
+        foreach($path as $key => $segment) {
+            if (strpos($segment, ':') === 0) {
+                $indexes[$segment] = ($key-1);
             }
         }
-        return $position;
+        return $indexes;
     }
 
     /**
@@ -69,9 +70,7 @@ class Router {
         if ($routes) {
             foreach ($routes as $route) {
                 $tempPath = $path;
-                $parameterCount = count(array_filter(
-                    preg_split("#/#", $route['path'])
-                ));
+                $parameterCount = count(UrlHelper::getNonEmptyPathSegmentsAsArray($route['path']));
                 if (count($tempPath) === $parameterCount) {
                     $variablesIndexes = Router::getRouteVariableIndexes(($route));
                     if (!empty($variablesIndexes)) {
@@ -81,11 +80,11 @@ class Router {
                     }
                     $fullPath = ($parameterCount === 0) ? '/' : '/' . implode('/', $tempPath) . '/';
                     if ($route['path'] === $fullPath) {
-                        if ($_SERVER['REQUEST_METHOD'] === $route['verb']) {
+                        if (Request::getRequestMethod() === $route['method']) {
                             // The route matches after substitution, so dispatch it
                             return $route;
                         } else {
-                            var_export('VERB NOT ALLOWED');
+                            var_export('METHOD NOT ALLOWED');
                         }
                     }
                 }

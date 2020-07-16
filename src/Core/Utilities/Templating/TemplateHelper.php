@@ -1,8 +1,8 @@
 <?php
 
-namespace Crodev\Core\Utilities;
+namespace Crodev\Core\Utilities\Templating;
 
-class Templating {
+class TemplateHelper {
 
     /**
      * Return clean url for use in templates which includes the relative path

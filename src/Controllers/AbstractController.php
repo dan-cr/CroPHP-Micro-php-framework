@@ -2,7 +2,7 @@
 
 namespace Crodev\Controllers;
 
-use Crodev\Core\Utilities\Templating as T;
+use Crodev\Core\Utilities\Templating\TemplateHelper;
 
 abstract class AbstractController {
 
@@ -18,7 +18,7 @@ abstract class AbstractController {
         $dir = TEMPLATES_DIR;
 
         // Pass templating functions as variable $T to view
-        $data['T'] = new T();
+        $data['TH'] = new TemplateHelper();
 
         extract($data);
 

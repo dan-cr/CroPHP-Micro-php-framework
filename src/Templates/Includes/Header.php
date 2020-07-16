@@ -11,13 +11,13 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <ul class="navbar-nav">
     <li class="nav-item active">
-      <a class="nav-link" href="<?= $T::url('/') ?>">Logo</a>
+      <a class="nav-link" href="<?= $TH::url('/') ?>">Logo</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="<?= $T::url('/') ?>">Home</a>
+      <a class="nav-link" href="<?= $TH::url('/') ?>">Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="<?= $T::url('/test') ?>">Test</a>
+      <a class="nav-link" href="<?= $TH::url('/test') ?>">Test</a>
     </li>
   </ul>
 </nav>
