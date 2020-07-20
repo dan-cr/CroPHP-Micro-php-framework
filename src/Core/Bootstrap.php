@@ -26,10 +26,18 @@ $matchedRoute = Router::matchRoute($routes, $path);
 try {
     // Dispatch request if found, otherwise display 404
     if ($matchedRoute) {
-        Dispatcher::execute($matchedRoute['handler'], $matchedRoute['action']);
+        $data = [];
+        $indexes = Router::getRouteVariableIndexes($matchedRoute);
+        if ($indexes) {
+            foreach($indexes as $var => $value) {
+                $variable = substr($key, 1);
+                $data[$variable] = $path[$value + 1];
+            }
+        }
+        Dispatcher::execute($matchedRoute['handler'], $matchedRoute['action'], $data);
     } else {
         Dispatcher::execute('error', 'notFound');
     }
 } catch (\Exception $e) {
-    Dispatcher::execute('error', 'generic', $e->getMessage());
+    Dispatcher::execute('error', 'generic', ["error" => $e->getMessage()]);
 }
