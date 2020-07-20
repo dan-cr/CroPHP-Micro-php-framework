@@ -11,17 +11,17 @@ class Dispatcher {
      *
      * @param string $controller
      * @param string $func
-     * @param mixed string|null $data
+     * @param array $data
      * @return void
      */
-    public static function execute(string $controller, string $method, string $data = null): void {
+    public static function execute(string $controller, string $method, array $data = null): void {
 
         $class = ucfirst($controller);
 
         // Get namespaced controller name
         $className = '\\' . PROJECT_NAMESPACE . '\Controllers\\' . $class . '\\' . $class . 'Controller';
 
-        // Instantiate controller if exists, otherwise return 404
+        // Load the controller if it exists
         if (class_exists($className)) {
             $object = new $className;
             if (method_exists($object, $method)) {
