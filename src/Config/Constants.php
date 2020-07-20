@@ -38,7 +38,7 @@ if (ENVIRONMENT === 'DEVELOPMENT') {
 ***********************************************************/
 
 
-// Document root (Change this to match your root folder)
+// Document Root (Change this to match your root folder)
 define('PROJECT_DIR', '/projects/crodev/');
 
 
