@@ -20,6 +20,7 @@ abstract class AbstractController {
         // Pass templating functions as variable $T to view
         $data['TH'] = new TemplateHelper();
 
+        // Extract values from associative array for use in templates
         extract($data);
 
         // Render Header
