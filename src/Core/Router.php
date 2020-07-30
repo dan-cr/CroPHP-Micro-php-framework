@@ -11,7 +11,7 @@ class Router {
      *
      * @var array
      */
-    private static $routes = [];
+    private $routes = [];
 
 
     /**
@@ -22,13 +22,13 @@ class Router {
      * @param array $operation
      * @return void
      */
-    public static function addRoute(string $expression, string $method, array $operation): void {
+    public function addRoute(string $expression, string $method, array $operation): void {
 
         // Destructure assoc array into individual parts
         ['handler' => $handler, 'action' => $action] = $operation;
 
         // Append new route to routes array
-        self::$routes[] = [
+        $this->routes[] = [
             'path' => $expression,
             'method' => $method,
             'handler' => $handler,
@@ -40,8 +40,8 @@ class Router {
      * Retrieve all routes
      * @return array
      */
-    public static function getRoutes(): array {
-        return self::$routes;
+    public function getRoutes(): array {
+        return $this->routes;
     }
 
     /**
@@ -49,7 +49,7 @@ class Router {
      * @param array $route
      * @return array
      */
-    public static function getRouteVariableIndexes($route): array {
+    public function getRouteVariableIndexes($route): array {
         $indexes = [];
         $path = UrlHelper::getNonEmptyPathSegmentsAsArray($route['path']);
         foreach($path as $key => $segment) {
@@ -66,13 +66,13 @@ class Router {
      * @param array $path
      * @return mixed array|null
      */
-    public static function matchRoute(array $routes, array $path): ?array {
+    public function matchRoute(array $routes, array $path): ?array {
         if ($routes) {
             foreach ($routes as $route) {
                 $tempPath = $path;
                 $parameterCount = count(UrlHelper::getNonEmptyPathSegmentsAsArray($route['path']));
                 if (count($tempPath) === $parameterCount) {
-                    $variablesIndexes = Router::getRouteVariableIndexes(($route));
+                    $variablesIndexes = $this->getRouteVariableIndexes(($route));
                     if (!empty($variablesIndexes)) {
                         foreach($variablesIndexes as $key => $index) {
                             $tempPath[$index+1] = $key;
@@ -81,7 +81,7 @@ class Router {
                     $fullPath = ($parameterCount === 0) ? '/' : '/' . implode('/', $tempPath) . '/';
                     if ($route['path'] === $fullPath) {
                         if (Request::getRequestMethod() === $route['method']) {
-                            // The route matches after substitution, so dispatch it
+                            // The route matches after substitution, so let's return it
                             return $route;
                         } else {
                             var_export('METHOD NOT ALLOWED');

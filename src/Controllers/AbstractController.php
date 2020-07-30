@@ -2,7 +2,7 @@
 
 namespace Crodev\Controllers;
 
-use Crodev\Core\Utilities\Templating\TemplateHelper;
+use Crodev\Core\Services\Container;
 
 abstract class AbstractController {
 
@@ -13,27 +13,21 @@ abstract class AbstractController {
      * @param mixed array|null
      * @return void
      */
-    public function render($template, $data = null): void {
+    public function renderPage(string $template, $data = null): void {
 
-        $dir = TEMPLATES_DIR;
 
-        // Pass templating functions as variable $T to view
-        $data['TH'] = new TemplateHelper();
-
-        // Extract values from associative array for use in templates
-        extract($data);
+         // BAD !! REDO TIS, LOOK AT AUTOWIRING AND THIRD PARTY DI CONTAINERS
+        $renderer = (new Container)->getRenderer();
 
         // Render Header
-        require_once($dir . '/Includes/' . 'Header.php');
+        $renderer->loadHeader();
 
-        $templatePath = $dir . ucfirst($template) . '.php';
-
-        if (file_exists($templatePath)) {
-            require_once($templatePath);
-        }
+        // Render Template
+        $renderer->loadTemplate($template, $data);
 
         // Render Footer
-        require_once($dir . '/Includes/' . 'Footer.php');
+        $renderer->loadFooter();
+
     }
 
 }

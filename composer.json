@@ -2,9 +2,11 @@
     "autoload": {
         "psr-4": {
             "Crodev\\": "src/"
-        }
+        },
+        "files": ["src/Core/Utilities/Templating/TemplateHelper.php"]
     },
     "require": {
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "php-di/php-di": "^6.2"
     }
 }

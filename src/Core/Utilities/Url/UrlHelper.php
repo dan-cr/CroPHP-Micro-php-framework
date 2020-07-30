@@ -4,7 +4,6 @@ namespace Crodev\Core\Utilities\Url;
 
 class UrlHelper
 {
-
     /**
      * Returns all path segments after the base url as an array
      * @param string $path

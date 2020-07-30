@@ -6,8 +6,8 @@ use Crodev\Controllers\AbstractController;
 
 class TestController extends AbstractController {
 
-    public function index(array $data) {
-        $this->render('test', array_merge(['test' => 'hi'], $data));
+    public function index(array $data): void {
+        $this->renderPage('test', array_merge(['test' => 'hi'], $data));
     }
 
 }

@@ -4,11 +4,11 @@ namespace Crodev\Core;
 
 class Request {
 
-    private static $scheme;
+    private $scheme;
 
-    private static $host;
+    private $host;
 
-    private static $path;
+    private $path;
 
     
     /**
@@ -16,7 +16,7 @@ class Request {
      *
      * @return string
      */
-    public static function getRequestedUrl(): string {
+    public function getRequestedUrl(): string {
         return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     }
 
@@ -25,16 +25,16 @@ class Request {
      *
      * @return void
      */
-    public static function getUrlParts(): void {
-        $url = self::getRequestedUrl();
+    public function getUrlParts(): void {
+        $url = $this->getRequestedUrl();
         $url_parts = parse_url($url);
 
         // Remove root directory from path if provided in config
         $url_parts['path'] = str_replace(PROJECT_DIR, '', $url_parts['path']);
 
-        self::$scheme   = $url_parts['scheme'];
-        self::$host     = $url_parts['host'];
-        self::$path     = $url_parts['path'];
+        $this->scheme   = $url_parts['scheme'];
+        $this->host     = $url_parts['host'];
+        $this->path     = $url_parts['path'];
     }
 
     /**
@@ -42,18 +42,18 @@ class Request {
      *
      * @return string
      */
-    public static function getPath(): string {
-        self::getUrlParts();
+    public function getPath(): string {
+        $this->getUrlParts();
         // Add starting slash if missing
-        if (strpos(self::$path, '/') !== 0) {
-            self::$path = '/' . self::$path;
+        if (strpos($this->path, '/') !== 0) {
+            $this->path = '/' . $this->path;
         }
         // Add trailing slash if missing
-        if (substr(self::$path, -1) !== '/') {
-            self::$path = self::$path . '/'; 
+        if (substr($this->path, -1) !== '/') {
+            $this->path = $this->path . '/'; 
         }
         // Remove duplicate forward slashes and return path
-        return preg_replace('/\/+/', '/', self::$path);
+        return preg_replace('/\/+/', '/', $this->path);
     }
 
     /**

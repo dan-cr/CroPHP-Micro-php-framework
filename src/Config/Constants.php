@@ -9,16 +9,16 @@ define('BASE_URL', __DIR__ . '/..');
 define('ENVIRONMENT', 'DEVELOPMENT');
 
 
-// Scripts Directory
-define('SCRIPTS_DIR', BASE_URL . '/Assets/Scripts/');
+// Development Scripts Directory
+define('DEV_SCRIPTS_DIR', BASE_URL . '/../public/Assets/Scripts/');
 
 
-// Styles Directory
-define('STYLES_DIR', BASE_URL . '/Assets/Stylesheets/');
+// Development Stylesheet Directory
+define('DEV_STYLES_DIR', BASE_URL . '/../public/Assets/Stylesheets/');
 
 
-// Images Directory
-define('IMAGES_DIR', BASE_URL . '/Assets/Images/');
+// Development Images Directory
+define('DEV_IMAGES_DIR', BASE_URL . '/../public/Assets/Images/');
 
 
 // Templates Directory
@@ -38,9 +38,25 @@ if (ENVIRONMENT === 'DEVELOPMENT') {
 ***********************************************************/
 
 
+// Project Namespace
+define('PROJECT_NAMESPACE', 'Crodev');
+
+
 // Document Root (Change this to match your root folder)
 define('PROJECT_DIR', '/projects/crodev/');
 
 
-// Project Namespace
-define('PROJECT_NAMESPACE', 'Crodev');
+// Public Scripts Directory
+define('PUBLIC_SCRIPTS_DIR', PROJECT_DIR . 'public/Assets/Scripts/');
+
+
+// Public Stylesheet Directory
+define('PUBLIC_STYLES_DIR', PROJECT_DIR . 'public/Assets/Stylesheets/');
+
+
+// Public Images Directory
+define('PUBLIC_IMAGES_DIR', PROJECT_DIR . 'public/Assets/Images/');
+
+
+// Controller Path
+Define('CONTROLLER_PATH', '\\' . PROJECT_NAMESPACE . '\Controllers\\');

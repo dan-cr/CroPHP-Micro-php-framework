@@ -1,7 +1,7 @@
 <?php 
 
-if (isset($data['test'])) {
-    echo $data['test'];
+if (isset($name)) {
+    echo "Hello there " . $name;
 }
 
 ?>

@@ -2,8 +2,6 @@
 
 namespace Crodev\Core;
 
-use Exception;
-
 class Dispatcher {
     
     /**
@@ -14,23 +12,23 @@ class Dispatcher {
      * @param array $data
      * @return void
      */
-    public static function execute(string $controller, string $method, array $data = null): void {
+    public function execute(string $controller, string $method, array $data = null): void {
 
         $class = ucfirst($controller);
 
         // Get namespaced controller name
-        $className = '\\' . PROJECT_NAMESPACE . '\Controllers\\' . $class . '\\' . $class . 'Controller';
+        $className = CONTROLLER_PATH . $class . '\\' . $class . 'Controller';
 
         // Load the controller if it exists
         if (class_exists($className)) {
             $object = new $className;
             if (method_exists($object, $method)) {
-                call_user_func( array( new $className, $method ), $data );
+                call_user_func([$object, $method], $data );
             } else {
-                throw new Exception('Method: <strong>' . $method . '</strong> specified in config does not exist on controller.');
+                throw new \Exception(sprintf('Method: %s specified in config does not exist on controller', $method));
             }
         } else {
-            throw new Exception('Class: <strong>' . $className . '</strong> does not does not exist.');
+            throw new \Exception(sprintf('Class: %s does not does not exist.', $className));
         }
 
     }

@@ -11,33 +11,38 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 // Application Constants
 require_once __DIR__ . '/../Config/Constants.php';
 
+// Load core framework modules
+$router = new Router();
+$dispatcher = new Dispatcher();
+$request = new Request();
+
 // Application Routes
 require_once BASE_URL . '/Config/Routes.php';
 
 // Retrieves all user specified routes in Routes.php
-$routes = Router::getRoutes();
+$routes = $router->getRoutes();
 
 // Retrieve current path in segments using as array
-$path = UrlHelper::getNonEmptyPathSegmentsAsArray(Request::getPath());
+$path = UrlHelper::getNonEmptyPathSegmentsAsArray($request->getPath());
 
 // Check if current path matches a specified route in config
-$matchedRoute = Router::matchRoute($routes, $path);
+$matchedRoute = $router->matchRoute($routes, $path);
 
 try {
     // Dispatch request if found, otherwise display 404
     if ($matchedRoute) {
         $data = [];
-        $indexes = Router::getRouteVariableIndexes($matchedRoute);
+        $indexes = $router->getRouteVariableIndexes($matchedRoute);
         if ($indexes) {
             foreach($indexes as $var => $value) {
-                $variable = substr($key, 1);
+                $variable = substr($var, 1);
                 $data[$variable] = $path[$value + 1];
             }
         }
-        Dispatcher::execute($matchedRoute['handler'], $matchedRoute['action'], $data);
+        $dispatcher->execute($matchedRoute['handler'], $matchedRoute['action'], $data);
     } else {
-        Dispatcher::execute('error', 'notFound');
+        $dispatcher->execute('error', 'notFound');
     }
 } catch (\Exception $e) {
-    Dispatcher::execute('error', 'generic', ["error" => $e->getMessage()]);
+    $dispatcher->execute('error', 'generic', ["message" => $e->getMessage()]);
 }

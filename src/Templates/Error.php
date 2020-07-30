@@ -1,3 +1,3 @@
 <section id="error">
-    <?php echo ($data['error']) ?? ''; ?>
+    <?php echo ($error['message']) ?? ''; ?>
 </section>
