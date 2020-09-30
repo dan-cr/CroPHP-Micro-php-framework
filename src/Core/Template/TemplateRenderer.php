@@ -2,12 +2,12 @@
 
 namespace Crodev\Core\Template;
 
-class DefaultRenderer extends AbstractRenderer {
+class TemplateRenderer {
 
     public function loadHeader() {
         $path = TEMPLATES_DIR . '/Includes/' . 'Header.php';
         if (file_exists($path)) {
-            require_once($path);
+            require_once $path;
         }
     }
 
@@ -17,14 +17,20 @@ class DefaultRenderer extends AbstractRenderer {
             if (!empty($data)) {
                 extract($data);
             }
-            require_once($templatePath);
+            require_once $templatePath;
         }
     }
 
     public function loadFooter() {
         $path = TEMPLATES_DIR . '/Includes/' . 'Footer.php';
         if (file_exists($path)) {
-            require_once($path);
+            require_once $path;
         }
+    }
+
+    public function render($file, $data) {
+        $this->loadHeader();
+        $this->loadTemplate($file, $data);
+        $this->loadFooter();
     }
 }

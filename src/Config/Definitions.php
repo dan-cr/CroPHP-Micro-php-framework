@@ -1,6 +1,6 @@
 <?php
-use Crodev\Core\Template\DefaultRenderer;
+use Crodev\Core\Template\TemplateRenderer;
 
 $container['renderer'] = function ($c) {
-    return new DefaultRenderer();
+    return new TemplateRenderer();
 };

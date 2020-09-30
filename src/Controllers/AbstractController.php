@@ -2,8 +2,6 @@
 
 namespace Crodev\Controllers;
 
-use Crodev\Core\Template\AbstractRenderer;
-
 abstract class AbstractController {
 
     /**
@@ -13,17 +11,8 @@ abstract class AbstractController {
      * @param mixed array|null
      * @return void
      */
-    public function renderPage(string $template, $data = null, AbstractRenderer $renderer): void {
-
-        // Render Header
-        $renderer->loadHeader();
-
-        // Render Template
-        $renderer->loadTemplate($template, $data);
-
-        // Render Footer
-        $renderer->loadFooter();
-
+    public function renderPage(string $template, $data = null, $renderer): void {
+        $renderer->render($template, $data);
     }
 
 }
