@@ -3,7 +3,13 @@
 namespace Crodev\Core;
 
 class Dispatcher {
-    
+
+    private $container;
+
+    public function __construct($container) {
+        $this->container = $container;
+    }
+
     /**
      * Dispatch the request to the controller
      *
@@ -21,9 +27,10 @@ class Dispatcher {
 
         // Load the controller if it exists
         if (class_exists($className)) {
-            $object = new $className;
+            // Create controller object passing the container
+            $object = new $className($this->container);
             if (method_exists($object, $method)) {
-                call_user_func([$object, $method], $data );
+                call_user_func([$object, $method], $data);
             } else {
                 throw new \Exception(sprintf('Method: %s specified in config does not exist on controller', $method));
             }

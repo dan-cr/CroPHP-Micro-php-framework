@@ -1,9 +1,10 @@
 <?php
 
-use Crodev\Core\Router;
-use Crodev\Core\Request;
 use Crodev\Core\Dispatcher;
+use Crodev\Core\Request;
+use Crodev\Core\Router;
 use Crodev\Core\Utilities\Url\UrlHelper;
+use Pimple\Container;
 
 // PSR-4 Autoloading
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -11,10 +12,16 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 // Application Constants
 require_once __DIR__ . '/../Config/Constants.php';
 
+// Service Container initialisation and definitions
+$container = new Container();
+
+// Container Definitions
+require_once __DIR__ . '/../Config/Definitions.php';
+
 // Load core framework modules
-$router = new Router();
-$dispatcher = new Dispatcher();
-$request = new Request();
+$router     = new Router();
+$dispatcher = new Dispatcher($container);
+$request    = new Request();
 
 // Application Routes
 require_once BASE_URL . '/Config/Routes.php';
@@ -31,11 +38,11 @@ $matchedRoute = $router->matchRoute($routes, $path);
 try {
     // Dispatch request if found, otherwise display 404
     if ($matchedRoute) {
-        $data = [];
+        $data    = [];
         $indexes = $router->getRouteVariableIndexes($matchedRoute);
         if ($indexes) {
-            foreach($indexes as $var => $value) {
-                $variable = substr($var, 1);
+            foreach ($indexes as $var => $value) {
+                $variable        = substr($var, 1);
                 $data[$variable] = $path[$value + 1];
             }
         }
